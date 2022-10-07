@@ -19,11 +19,16 @@ import com.example.animalwikipedia.RVClickListener;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-
+    public static final int SPAN_COUNT_ONE = 1;
+    public static final int SPAN_COUNT_THREE = 3;
     private ArrayList<String> nameList; //data: the names displayed
     private ArrayList<Integer> imageList;
     private RVClickListener RVlistener; //listener defined in main activity
     // private Context context;
+    private static final int griding = 1;
+    private static final int listing = 2;
+
+
 
     /*
     passing in the data and the listener defined in the main activity
@@ -44,14 +49,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Context context = parent.getContext();
         // get inflater and inflate XML layout file
         LayoutInflater inflater = LayoutInflater.from(context);
-        View listView = inflater.inflate(R.layout.list_view, parent, false);
-        View gridView = inflater.inflate(R.layout.grid_view, parent, false);
-
+        if(viewType == griding) {
+            View gridView = inflater.inflate(R.layout.grid_view, parent, false);
+            ViewHolder viewHolder = new ViewHolder(gridView, RVlistener);
+            return viewHolder;
+        } else {
+            View listView = inflater.inflate(R.layout.list_view, parent, false);
+            ViewHolder viewHolder = new ViewHolder(listView, RVlistener);
+            return viewHolder;
+        }
 
         // create ViewHolder passing the view that it will wrap and the listener on the view
-        ViewHolder viewHolder = new ViewHolder(listView, RVlistener); // create ViewHolder
-
-        return viewHolder;
+ // create ViewHolder
     }
 
     @Override
@@ -67,9 +76,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public int getItemCount() {
         return nameList.size();
     }
-
-
-
 
     /*
         This class creates a wrapper object around a view that contains the layout for

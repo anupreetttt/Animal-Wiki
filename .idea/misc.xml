@@ -7,7 +7,7 @@
         <entry key="app/src/main/res/layout/grid_view.xml" value="0.5598958333333334" />
         <entry key="app/src/main/res/layout/list_view.xml" value="0.5609375" />
         <entry key="app/src/main/res/layout/recycler_list.xml" value="0.5512820512820513" />
-        <entry key="app/src/main/res/menu/context_menu.xml" value="0.5609375" />
+        <entry key="app/src/main/res/menu/context_menu.xml" value="0.5" />
       </map>
     </option>
   </component>
