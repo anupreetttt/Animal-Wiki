@@ -1,7 +1,7 @@
 package com.example.animalwikipedia;
 
-import static com.example.animalwikipedia.MyAdapter.SPAN_COUNT_ONE;
-import static com.example.animalwikipedia.MyAdapter.SPAN_COUNT_THREE;
+//import static com.example.animalwikipedia.MyAdapter.SPAN_COUNT_ONE;
+//import static com.example.animalwikipedia.MyAdapter.SPAN_COUNT_THREE;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
                 "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
                 "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
                 "https://en.wikipedia.org/wiki/Rabbit");
+
+        String[] url1 = {"https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Lion",
+                "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
+                "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
+                "https://en.wikipedia.org/wiki/Rabbit"};
         animalList = new ArrayList<>();
         animalList.addAll(names);
         myAnimals = new ArrayList<>();
@@ -59,21 +64,31 @@ public class MainActivity extends AppCompatActivity {
             TextView name = (TextView) view.findViewById(R.id.textView);
             ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
             Toast.makeText(this, name.getText(), Toast.LENGTH_SHORT).show();
-
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(animalUrls.get(position)));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url1[position]));
+                    startActivity(intent);
                 }
             });
+
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Toast.makeText(MainActivity.this, "Long click working", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+
         };
 //        gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_ONE);
+
 
         MyAdapter adapter = new MyAdapter(animalList, myAnimals, listener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new GridLayoutManager(this,2)); //use this line to see as a grid
-        recyclerView.setLayoutManager(new LinearLayoutManager(this)); //use this line to see as a standard vertical list
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2)); //use this line to see as a grid
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this)); //use this line to see as a standard vertical list
 
     }
 
@@ -85,12 +100,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         switch (item.getItemId()) {
             case R.id.menu1:
                 Toast.makeText(this, "Grid view", Toast.LENGTH_SHORT).show();
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
                 return true;
             case R.id.menu2:
                 Toast.makeText(this, "List view", Toast.LENGTH_SHORT).show();
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 return true;
         }
         return super.onOptionsItemSelected(item);

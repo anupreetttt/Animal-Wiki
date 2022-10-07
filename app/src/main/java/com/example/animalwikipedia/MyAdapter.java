@@ -19,14 +19,14 @@ import com.example.animalwikipedia.RVClickListener;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    public static final int SPAN_COUNT_ONE = 1;
-    public static final int SPAN_COUNT_THREE = 3;
+//    public static final int SPAN_COUNT_ONE = 1;
+//    public static final int SPAN_COUNT_THREE = 3;
     private ArrayList<String> nameList; //data: the names displayed
     private ArrayList<Integer> imageList;
     private RVClickListener RVlistener; //listener defined in main activity
     // private Context context;
-    private static final int griding = 1;
-    private static final int listing = 2;
+//    private static final int griding = 1;
+//    private static final int listing = 2;
 
 
 
@@ -49,15 +49,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Context context = parent.getContext();
         // get inflater and inflate XML layout file
         LayoutInflater inflater = LayoutInflater.from(context);
-        if(viewType == griding) {
-            View gridView = inflater.inflate(R.layout.grid_view, parent, false);
-            ViewHolder viewHolder = new ViewHolder(gridView, RVlistener);
-            return viewHolder;
-        } else {
-            View listView = inflater.inflate(R.layout.list_view, parent, false);
-            ViewHolder viewHolder = new ViewHolder(listView, RVlistener);
-            return viewHolder;
-        }
+        View gridView = inflater.inflate(R.layout.grid_view, parent, false);
+
+        // create ViewHolder passing the view that it will wrap and the listener on the view
+        ViewHolder viewHolder = new ViewHolder(gridView, RVlistener); // create ViewHolder
+
+        return viewHolder;
 
         // create ViewHolder passing the view that it will wrap and the listener on the view
  // create ViewHolder
@@ -101,6 +98,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             /* don't forget to set the listener defined here to the view (list item) that was
                 passed in to the constructor. */
             itemView.setOnClickListener(this); //set short click listener
+
         }
 
         @Override
