@@ -45,7 +45,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         // get inflater and inflate XML layout file
         LayoutInflater inflater = LayoutInflater.from(context);
         View listView = inflater.inflate(R.layout.list_view, parent, false);
-//        View gridView = inflater.inflate(R.layout.grid_view, parent, false);
+        View gridView = inflater.inflate(R.layout.grid_view, parent, false);
 
 
         // create ViewHolder passing the view that it will wrap and the listener on the view
