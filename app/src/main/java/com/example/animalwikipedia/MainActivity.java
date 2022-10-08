@@ -33,6 +33,17 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    List<String> names = Arrays.asList("Tiger", "Lion", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");
+    List<Integer> animalImg = Arrays.asList(R.drawable.tiger, R.drawable.lion, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);
+    List<String> animalUrls = Arrays.asList("https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Lion",
+            "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
+            "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
+            "https://en.wikipedia.org/wiki/Rabbit");
+
+    String[] url1 = {"https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Lion",
+            "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
+            "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
+            "https://en.wikipedia.org/wiki/Rabbit"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,18 +52,6 @@ public class MainActivity extends AppCompatActivity {
 //        ImageView imageView = (ImageView) findViewById(R.id.imageView);
 //        registerForContextMenu(imageView);
 
-
-        List<String> names = Arrays.asList("Tiger", "Lion", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");
-        List<Integer> animalImg  = Arrays.asList(R.drawable.tiger, R.drawable.lion, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);
-        List<String> animalUrls = Arrays.asList("https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Lion",
-                "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
-                "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
-                "https://en.wikipedia.org/wiki/Rabbit");
-
-        String[] url1 = {"https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Lion",
-                "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
-                "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
-                "https://en.wikipedia.org/wiki/Rabbit"};
         animalList = new ArrayList<>();
         animalList.addAll(names);
         myAnimals = new ArrayList<>();
@@ -66,18 +65,19 @@ public class MainActivity extends AppCompatActivity {
         //Define the listener with a lambda and access the name of the list item from the view
         RVClickListener listener = (view, position) -> {
 
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url1[position]));
-                    startActivity(intent);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url1[position]));
+            startActivity(intent);
         };
 
 //        gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_ONE);
         MyAdapter adapter = new MyAdapter(animalList, myAnimals, listener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2)); //use this line to see as a grid
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); //use this line to see as a grid
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this)); //use this line to see as a standard vertical list
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.context_menu, menu);
@@ -114,5 +114,5 @@ public class MainActivity extends AppCompatActivity {
 //            gridLayoutManager.setSpanCount(SPAN_COUNT_ONE);
 //        }
 //        itemAdapter.notifyItemRangeChanged(0, itemAdapter.getItemCount());
-//    }
+//
 }

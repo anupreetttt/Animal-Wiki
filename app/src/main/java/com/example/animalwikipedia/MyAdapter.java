@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-//    public static final int SPAN_COUNT_ONE = 1;
+    //    public static final int SPAN_COUNT_ONE = 1;
 //    public static final int SPAN_COUNT_THREE = 3;
     private ArrayList<String> nameList; //data: the names displayed
     private ArrayList<Integer> imageList;
@@ -48,7 +48,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 //        mLayoutManager = layoutManager;
 //    }
 
-//    @Override
+    //    @Override
 //    public int getItemViewType(int position) {
 //        int spanCount = mLayoutManager.getSpanCount();
 //        if (spanCount == SPAN_COUNT_ONE) {
@@ -72,7 +72,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return viewHolder;
 
         // create ViewHolder passing the view that it will wrap and the listener on the view
- // create ViewHolder
+        // create ViewHolder
     }
 
     @Override
@@ -135,9 +135,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
           /*  //create menu in code
-
             menu.setHeaderTitle("My context menu");
-
             //add menu items and set the listener for each
             menu.add(0,v.getId(),0,"option 1").setOnMenuItemClickListener(onMenu);
             menu.add(0,v.getId(),0,"option 2").setOnMenuItemClickListener(onMenu);
