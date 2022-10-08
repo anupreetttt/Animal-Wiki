@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.animalwikipedia.RVClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 //    public static final int SPAN_COUNT_ONE = 1;
@@ -42,6 +43,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         this.RVlistener = listener;
     }
 
+//    public ItemAdapter(List<Item> items, GridLayoutManager layoutManager) {
+//        mItems = items;
+//        mLayoutManager = layoutManager;
+//    }
+
+//    @Override
+//    public int getItemViewType(int position) {
+//        int spanCount = mLayoutManager.getSpanCount();
+//        if (spanCount == SPAN_COUNT_ONE) {
+//            return VIEW_TYPE_BIG;
+//        } else {
+//            return VIEW_TYPE_SMALL;
+//        }
+//    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -117,8 +132,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             inflater.inflate(R.menu.context_menu, menu );
             menu.getItem(0).setOnMenuItemClickListener(onMenu);
             menu.getItem(1).setOnMenuItemClickListener(onMenu);
-            menu.getItem(2).setOnMenuItemClickListener(onMenu);
-            menu.getItem(3).setOnMenuItemClickListener(onMenu);
+
 
           /*  //create menu in code
 

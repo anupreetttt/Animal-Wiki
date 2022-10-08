@@ -6,6 +6,7 @@ package com.example.animalwikipedia;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> animalList;
     ArrayList<Integer> myAnimals;
     ArrayList<String> urls;
-//    private GridLayoutManager gridLayoutManager;
-//    private MyAdapter itemAdapter;
+    private GridLayoutManager gridLayoutManager;
+    private MyAdapter itemAdapter;
 
 
 
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+//        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+//        registerForContextMenu(imageView);
+
 
         List<String> names = Arrays.asList("Tiger", "Lion", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");
         List<Integer> animalImg  = Arrays.asList(R.drawable.tiger, R.drawable.lion, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);
@@ -61,29 +65,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Define the listener with a lambda and access the name of the list item from the view
         RVClickListener listener = (view, position) -> {
-            TextView name = (TextView) view.findViewById(R.id.textView);
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-            Toast.makeText(this, name.getText(), Toast.LENGTH_SHORT).show();
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url1[position]));
                     startActivity(intent);
-                }
-            });
-
-            imageView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Toast.makeText(MainActivity.this, "Long click working", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
-
         };
+
 //        gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_ONE);
-
-
         MyAdapter adapter = new MyAdapter(animalList, myAnimals, listener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
@@ -91,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this)); //use this line to see as a standard vertical list
 
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.context_menu, menu);
