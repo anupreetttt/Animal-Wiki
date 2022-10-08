@@ -1,17 +1,10 @@
 package com.example.animalwikipedia;
 
-//import static com.example.animalwikipedia.MyAdapter.SPAN_COUNT_ONE;
-//import static com.example.animalwikipedia.MyAdapter.SPAN_COUNT_THREE;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,12 +19,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> animalList;
-    ArrayList<Integer> myAnimals;
+    ArrayList<Integer> myAnimalImg;
     ArrayList<String> urls;
-    private GridLayoutManager gridLayoutManager;
-    private MyAdapter itemAdapter;
-
-
+    RVClickListener listener;
+    private Boolean checkGridView = true;
+    private Boolean checkListView = false;
+    private Boolean checkView = checkGridView;
+    RecyclerView recyclerView;
+    private static final String layout = "LAYOUT";
 
     List<String> names = Arrays.asList("Tiger", "Lion", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");
     List<Integer> animalImg = Arrays.asList(R.drawable.tiger, R.drawable.lion, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);
@@ -40,41 +35,43 @@ public class MainActivity extends AppCompatActivity {
             "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
             "https://en.wikipedia.org/wiki/Rabbit");
 
-    String[] url1 = {"https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Lion",
-            "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
-            "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
-            "https://en.wikipedia.org/wiki/Rabbit"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//        ImageView imageView = (ImageView) findViewById(R.id.imageView);
-//        registerForContextMenu(imageView);
+
+        if (savedInstanceState == null){
+            checkView = true;
+        } else {
+            checkView = savedInstanceState.getBoolean(layout);
+        }
 
         animalList = new ArrayList<>();
         animalList.addAll(names);
-        myAnimals = new ArrayList<>();
-        myAnimals.addAll(animalImg);
+        myAnimalImg = new ArrayList<>();
+        myAnimalImg.addAll(animalImg);
         urls = new ArrayList<>();
         urls.addAll(animalUrls);
 
+        recyclerView = findViewById(R.id.recycler_view);
         //Define the listener with a lambda and access the list of names with the position passed in
         //  RVClickListener listener = (view, position)-> Toast.makeText(this, "position: "+position, Toast.LENGTH_LONG).show();
 
         //Define the listener with a lambda and access the name of the list item from the view
         RVClickListener listener = (view, position) -> {
-
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url1[position]));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls.get(position)));
             startActivity(intent);
         };
 
 //        gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_ONE);
-        MyAdapter adapter = new MyAdapter(animalList, myAnimals, listener);
+        MyAdapter adapter = new MyAdapter(animalList, myAnimalImg, urls, checkView, listener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); //use this line to see as a grid
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this)); //use this line to see as a standard vertical list
+        if (checkView == checkGridView) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); //use this line to see as a grid
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this)); //use this line to see as a standard vertical list
+        }
 
     }
 
@@ -85,34 +82,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         switch (item.getItemId()) {
-            case R.id.menu1:
-                Toast.makeText(this, "Grid view", Toast.LENGTH_SHORT).show();
-                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-                return true;
             case R.id.menu2:
-                Toast.makeText(this, "List view", Toast.LENGTH_SHORT).show();
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                switchToGridLayout();
                 return true;
+
+            case R.id.menu1:
+                switchToListLayout();
+                return true;
+
+            default:
+                return false;
         }
-        return super.onOptionsItemSelected(item);
     }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.menu1) {
-//            switchLayout();
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//    private void switchLayout() {
-//        if (gridLayoutManager.getSpanCount() == SPAN_COUNT_ONE) {
-//            gridLayoutManager.setSpanCount(SPAN_COUNT_THREE);
-//        } else {
-//            gridLayoutManager.setSpanCount(SPAN_COUNT_ONE);
-//        }
-//        itemAdapter.notifyItemRangeChanged(0, itemAdapter.getItemCount());
-//
+    private void switchToGridLayout() {
+        if (checkView != checkListView) {
+            checkView = checkListView;
+            MyAdapter adapter = new MyAdapter(animalList, myAnimalImg, urls, false, listener);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        } else {
+            Toast.makeText(this, "Grid view", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void switchToListLayout() {
+        if (checkView != checkGridView) {
+            checkView = checkGridView;
+            MyAdapter adapter = new MyAdapter(animalList, myAnimalImg, urls, true, listener);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            Toast.makeText(this, "List view", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(layout,checkView);
+    }
 }

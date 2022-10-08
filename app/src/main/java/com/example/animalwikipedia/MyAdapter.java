@@ -1,6 +1,8 @@
 package com.example.animalwikipedia;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -14,49 +16,42 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.animalwikipedia.RVClickListener;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    //    public static final int SPAN_COUNT_ONE = 1;
-//    public static final int SPAN_COUNT_THREE = 3;
+
     private ArrayList<String> nameList; //data: the names displayed
     private ArrayList<Integer> imageList;
+    private ArrayList<String> listOfUrls;
     private RVClickListener RVlistener; //listener defined in main activity
-    // private Context context;
-//    private static final int griding = 1;
-//    private static final int listing = 2;
-
+    private int viewOption;
+    int imageID;
+    int textID;
+    protected static final String EXTRA_RES_ID = "POS";
 
 
     /*
     passing in the data and the listener defined in the main activity
      */
-    public MyAdapter(ArrayList<String> theList, ArrayList<Integer> animalList, RVClickListener listener){
+    public MyAdapter(ArrayList<String> animalList, ArrayList<Integer> myAnimalImg, ArrayList<String> urls, Boolean checkView, RVClickListener listener){
         // save list of names to be displayed passed by main activity
-        nameList = theList;
-        imageList = animalList;
-
+        nameList = animalList;
+        imageList = myAnimalImg;
+        listOfUrls = urls;
         // save listener defined and passed by main activity
         this.RVlistener = listener;
+
+        if (checkView == true) {
+            viewOption = R.layout.grid_view;
+            imageID = R.id.imageGView;
+            textID = R.id.textGView;
+        } else {
+            viewOption = R.layout.list_view;
+            imageID = R.id.imageLView;
+            textID = R.id.textLView;
+        }
     }
 
-//    public ItemAdapter(List<Item> items, GridLayoutManager layoutManager) {
-//        mItems = items;
-//        mLayoutManager = layoutManager;
-//    }
-
-    //    @Override
-//    public int getItemViewType(int position) {
-//        int spanCount = mLayoutManager.getSpanCount();
-//        if (spanCount == SPAN_COUNT_ONE) {
-//            return VIEW_TYPE_BIG;
-//        } else {
-//            return VIEW_TYPE_SMALL;
-//        }
-//    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,12 +59,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         Context context = parent.getContext();
         // get inflater and inflate XML layout file
         LayoutInflater inflater = LayoutInflater.from(context);
-        View gridView = inflater.inflate(R.layout.grid_view, parent, false);
+        View gridView = inflater.inflate(viewOption, parent, false);
 
         // create ViewHolder passing the view that it will wrap and the listener on the view
-        ViewHolder viewHolder = new ViewHolder(gridView, RVlistener); // create ViewHolder
 
-        return viewHolder;
+        return new ViewHolder(gridView, RVlistener);
 
         // create ViewHolder passing the view that it will wrap and the listener on the view
         // create ViewHolder
@@ -104,8 +98,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView, RVClickListener passedListener) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.textView);
-            image = (ImageView) itemView.findViewById(R.id.imageView);
+            name = (TextView) itemView.findViewById(textID);
+            image = (ImageView) itemView.findViewById(imageID);
             this.itemView = itemView;
             itemView.setOnCreateContextMenuListener(this); //set context menu for each list item (long click)
             this.listener = passedListener;
@@ -129,9 +123,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             //inflate menu from xml
 
             MenuInflater inflater = new MenuInflater(v.getContext());
-            inflater.inflate(R.menu.context_menu, menu );
-            menu.getItem(0).setOnMenuItemClickListener(onMenu);
-            menu.getItem(1).setOnMenuItemClickListener(onMenu);
+            inflater.inflate(R.menu.longclick_menu, menu );
+            menu.getItem(0).setOnMenuItemClickListener(viewPhoto);
+            menu.getItem(1).setOnMenuItemClickListener(wikipedia);
 
 
           /*  //create menu in code
@@ -147,14 +141,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         /*
             listener for menu items clicked
          */
-        private final MenuItem.OnMenuItemClickListener onMenu = new MenuItem.OnMenuItemClickListener(){
+        private final MenuItem.OnMenuItemClickListener wikipedia = new MenuItem.OnMenuItemClickListener(){
             @Override
             public boolean onMenuItemClick(MenuItem item){
-                Log.i("ON_CLICK", name.getText() + " adapter pos: " + getAdapterPosition());
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(listOfUrls.get(getAdapterPosition())));
                 return true;
             }
         };
 
+        private final MenuItem.OnMenuItemClickListener viewPhoto = new MenuItem.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem item){
+                Intent intent = new Intent(itemView.getContext(), PreviewImage.class);
+                intent.putExtra(EXTRA_RES_ID, imageList.get(getAdapterPosition()));
+                itemView.getContext().startActivity(intent);
+                return true;
+            }
+        };
 
 
     }
