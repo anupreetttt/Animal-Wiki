@@ -1,5 +1,6 @@
 package com.example.animalwikipedia;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,12 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null){
-            checkView = true;
-        } else {
-            checkView = savedInstanceState.getBoolean(layout);
-        }
-
         animalList = new ArrayList<>();
         animalList.addAll(names);
         myAnimalImg = new ArrayList<>();
@@ -58,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //  RVClickListener listener = (view, position)-> Toast.makeText(this, "position: "+position, Toast.LENGTH_LONG).show();
 
         //Define the listener with a lambda and access the name of the list item from the view
-        RVClickListener listener = (view, position) -> {
+        listener = (view, position) -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls.get(position)));
             startActivity(intent);
         };
@@ -98,29 +93,26 @@ public class MainActivity extends AppCompatActivity {
     private void switchToGridLayout() {
         if (checkView != checkListView) {
             checkView = checkListView;
+            Toast.makeText(this, "List View", Toast.LENGTH_SHORT).show();
             MyAdapter adapter = new MyAdapter(animalList, myAnimalImg, urls, false, listener);
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else {
-            Toast.makeText(this, "Grid view", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "List view", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void switchToListLayout() {
         if (checkView != checkGridView) {
             checkView = checkGridView;
+            Toast.makeText(this, "Grid View", Toast.LENGTH_SHORT).show();
             MyAdapter adapter = new MyAdapter(animalList, myAnimalImg, urls, true, listener);
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
-            Toast.makeText(this, "List view", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Grid view", Toast.LENGTH_SHORT).show();
         }
-    }
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(layout,checkView);
     }
 }

@@ -20,28 +20,26 @@ import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private ArrayList<String> nameList; //data: the names displayed
+    private ArrayList<String> listOfAnimals; //data: the names displayed
     private ArrayList<Integer> imageList;
     private ArrayList<String> listOfUrls;
     private RVClickListener RVlistener; //listener defined in main activity
     private int viewOption;
     int imageID;
     int textID;
+    Boolean viewCheck;
     protected static final String EXTRA_RES_ID = "POS";
-
 
     /*
     passing in the data and the listener defined in the main activity
      */
     public MyAdapter(ArrayList<String> animalList, ArrayList<Integer> myAnimalImg, ArrayList<String> urls, Boolean checkView, RVClickListener listener){
         // save list of names to be displayed passed by main activity
-        nameList = animalList;
+        listOfAnimals = animalList;
         imageList = myAnimalImg;
         listOfUrls = urls;
-        // save listener defined and passed by main activity
-        this.RVlistener = listener;
-
-        if (checkView == true) {
+        viewCheck = checkView;
+        if (viewCheck == true) {
             viewOption = R.layout.grid_view;
             imageID = R.id.imageGView;
             textID = R.id.textGView;
@@ -50,11 +48,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             imageID = R.id.imageLView;
             textID = R.id.textLView;
         }
+        // save listener defined and passed by main activity
+        this.RVlistener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+//        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(viewOption,parent, false));
 
         Context context = parent.getContext();
         // get inflater and inflate XML layout file
@@ -65,22 +67,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         return new ViewHolder(gridView, RVlistener);
 
-        // create ViewHolder passing the view that it will wrap and the listener on the view
-        // create ViewHolder
+//         create ViewHolder passing the view that it will wrap and the listener on the view
+//         create ViewHolder
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // populate the item at the input position
-        holder.name.setText(nameList.get(position));
+        holder.name.setText(listOfAnimals.get(position));
         holder.image.setImageResource(imageList.get(position));
 
     }
 
     @Override
     public int getItemCount() {
-        return nameList.size();
+        return listOfAnimals.size();
     }
 
     /*
@@ -126,39 +128,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             inflater.inflate(R.menu.longclick_menu, menu );
             menu.getItem(0).setOnMenuItemClickListener(viewPhoto);
             menu.getItem(1).setOnMenuItemClickListener(wikipedia);
-
-
-          /*  //create menu in code
-            menu.setHeaderTitle("My context menu");
-            //add menu items and set the listener for each
-            menu.add(0,v.getId(),0,"option 1").setOnMenuItemClickListener(onMenu);
-            menu.add(0,v.getId(),0,"option 2").setOnMenuItemClickListener(onMenu);
-            menu.add(0,v.getId(),0,"option 3").setOnMenuItemClickListener(onMenu);
-            */
-
         }
 
         /*
             listener for menu items clicked
          */
-        private final MenuItem.OnMenuItemClickListener wikipedia = new MenuItem.OnMenuItemClickListener(){
-            @Override
-            public boolean onMenuItemClick(MenuItem item){
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(listOfUrls.get(getAdapterPosition())));
-                return true;
-            }
-        };
-
         private final MenuItem.OnMenuItemClickListener viewPhoto = new MenuItem.OnMenuItemClickListener(){
             @Override
             public boolean onMenuItemClick(MenuItem item){
                 Intent intent = new Intent(itemView.getContext(), PreviewImage.class);
-                intent.putExtra(EXTRA_RES_ID, imageList.get(getAdapterPosition()));
+//                intent.putExtra(EXTRA_RES_ID, imageList.get(getAdapterPosition()));
+                intent.putExtra(EXTRA_RES_ID, (int) imageList.get(getAdapterPosition()));
                 itemView.getContext().startActivity(intent);
                 return true;
             }
         };
 
-
+        private final MenuItem.OnMenuItemClickListener wikipedia = new MenuItem.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem item){
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(listOfUrls.get(getAdapterPosition())));
+                itemView.getContext().startActivity(intent);
+                return true;
+            }
+        };
     }
 }

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="#FFFFFF"
     android:orientation="vertical">
 
 <!--    <ImageView-->
@@ -43,7 +42,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textGView"
         android:text="Tiger"
-        android:padding="40dp"
-        android:textSize="26sp"
+        android:paddingLeft="50dp"
+        android:textSize="20sp"
         android:layout_marginTop="6dp"/>
 </LinearLayout>
