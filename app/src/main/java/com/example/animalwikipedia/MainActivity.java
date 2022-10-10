@@ -25,13 +25,15 @@ public class MainActivity extends AppCompatActivity {
     RVClickListener listener;
     private Boolean checkGridView = true;
     private Boolean checkListView = false;
-    private Boolean checkView = checkGridView;
+    private Boolean checkView = checkGridView;              //checkView will check if the current view is in the list view or the grid view, its in gridView by default, thats why checkView is set to checkGridView
     RecyclerView recyclerView;
     private static final String layout = "LAYOUT";
 
-    List<String> names = Arrays.asList("Tiger", "Lion", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");
-    List<Integer> animalImg = Arrays.asList(R.drawable.tiger, R.drawable.lion, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);
-    List<String> animalUrls = Arrays.asList("https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Lion",
+    List<String> names = Arrays.asList("Tiger", "Dog", "Lion", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");                  // Passing the name of the names
+    List<Integer> animalImg = Arrays.asList(R.drawable.tiger, R.drawable.dog, R.drawable.lion, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);      // Retrieving images of the animals from the drawable folder
+
+    // URLs of the respective animal wikipedia page
+    List<String> animalUrls = Arrays.asList("https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Dog", "https://en.wikipedia.org/wiki/Lion",
             "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
             "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
             "https://en.wikipedia.org/wiki/Rabbit");
@@ -58,10 +60,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         };
 
-//        gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_ONE);
         MyAdapter adapter = new MyAdapter(animalList, myAnimalImg, urls, checkView, listener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+
+        // checking is the current view, if the checkView is not equal to checkGridView, it will set the layout to Linear layout
         if (checkView == checkGridView) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); //use this line to see as a grid
         } else {
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Creating the menu in the task bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.context_menu, menu);
@@ -78,11 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu2:
+
+            case R.id.menu1:
                 switchToGridLayout();
                 return true;
 
-            case R.id.menu1:
+            case R.id.menu2:
                 switchToListLayout();
                 return true;
 
@@ -90,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
         }
     }
-    private void switchToGridLayout() {
+
+    // This function will invoke if the user clicks on the listView button on the menu bar to switch the layout from gridView to listView
+    private void switchToListLayout() {
         if (checkView != checkListView) {
             checkView = checkListView;
             Toast.makeText(this, "List View", Toast.LENGTH_SHORT).show();
@@ -99,11 +106,12 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else {
-            Toast.makeText(this, "List view", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "List view", Toast.LENGTH_SHORT).show();               // if the view is already in the list view it will show a toast, saying "list view"
         }
     }
 
-    private void switchToListLayout() {
+    // This function will invoke if the user clicks on the gridView button on the menu bar to switch the layout from listView to gridView
+    private void switchToGridLayout() {
         if (checkView != checkGridView) {
             checkView = checkGridView;
             Toast.makeText(this, "Grid View", Toast.LENGTH_SHORT).show();
@@ -112,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
-            Toast.makeText(this, "Grid view", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Grid view", Toast.LENGTH_SHORT).show();               // if the view is already in the grid view it will show a toast, saying "grid view"
         }
     }
 }

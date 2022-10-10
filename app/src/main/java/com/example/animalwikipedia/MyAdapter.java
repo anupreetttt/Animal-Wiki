@@ -20,15 +20,17 @@ import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private ArrayList<String> listOfAnimals; //data: the names displayed
-    private ArrayList<Integer> imageList;
-    private ArrayList<String> listOfUrls;
-    private RVClickListener RVlistener; //listener defined in main activity
+    private ArrayList<String> listOfAnimals; // the animal names displayed
+    private ArrayList<Integer> imageList;  // the animals imanges displayed
+    private ArrayList<String> listOfUrls; // the animal urls
+    private RVClickListener newListener; //listener as defined in main activity
     private int viewOption;
-    int imageID;
-    int textID;
-    Boolean viewCheck;
+    private int imageID;
+    private int textID;
+    Boolean viewCheck;  // to check grid or list view
     protected static final String EXTRA_RES_ID = "POS";
+    Boolean gridLayout = true;
+//    Boolean listLayout = false;
 
     /*
     passing in the data and the listener defined in the main activity
@@ -39,7 +41,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         imageList = myAnimalImg;
         listOfUrls = urls;
         viewCheck = checkView;
-        if (viewCheck == true) {
+
+        if (viewCheck == gridLayout) {
             viewOption = R.layout.grid_view;
             imageID = R.id.imageGView;
             textID = R.id.textGView;
@@ -49,7 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             textID = R.id.textLView;
         }
         // save listener defined and passed by main activity
-        this.RVlistener = listener;
+        this.newListener = listener;
     }
 
     @NonNull
@@ -65,7 +68,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         // create ViewHolder passing the view that it will wrap and the listener on the view
 
-        return new ViewHolder(gridView, RVlistener);
+        return new ViewHolder(gridView, newListener);
 
 //         create ViewHolder passing the view that it will wrap and the listener on the view
 //         create ViewHolder
@@ -116,13 +119,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         public void onClick(View v) {
             // getAdapterPosition() returns the position of the current ViewHolder in the adapter.
             listener.onClick(v, getAdapterPosition());
-            Log.i("ON_CLICK", "in the onclick in view holder");
+            Log.i("OnCLICK", "After clicking on the view holder");
         }
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-            //inflate menu from xml
+            //This will inflate the context menu from xml
 
             MenuInflater inflater = new MenuInflater(v.getContext());
             inflater.inflate(R.menu.longclick_menu, menu );
@@ -133,6 +136,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         /*
             listener for menu items clicked
          */
+
+        // If user selects the preview photo option from the long click context menu:
         private final MenuItem.OnMenuItemClickListener viewPhoto = new MenuItem.OnMenuItemClickListener(){
             @Override
             public boolean onMenuItemClick(MenuItem item){
@@ -144,6 +149,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             }
         };
 
+        // If users selects the wikipedia option from the long click context menu,  they will be redirected to the respective animal wikipedia page
         private final MenuItem.OnMenuItemClickListener wikipedia = new MenuItem.OnMenuItemClickListener(){
             @Override
             public boolean onMenuItemClick(MenuItem item){
