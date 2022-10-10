@@ -29,11 +29,12 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private static final String layout = "LAYOUT";
 
-    List<String> names = Arrays.asList("Tiger", "Dog", "Lion", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");                  // Passing the name of the names
-    List<Integer> animalImg = Arrays.asList(R.drawable.tiger, R.drawable.dog, R.drawable.lion, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);      // Retrieving images of the animals from the drawable folder
+    List<String> names = Arrays.asList("Tiger", "Dog", "Lion", "Red Panda", "Rhinoceros", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");                  // Passing the name of the names
+    List<Integer> animalImg = Arrays.asList(R.drawable.tiger, R.drawable.dog, R.drawable.lion, R.drawable.redpanda, R.drawable.rhino, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);      // Retrieving images of the animals from the drawable folder
 
     // URLs of the respective animal wikipedia page
     List<String> animalUrls = Arrays.asList("https://en.wikipedia.org/wiki/Tiger", "https://en.wikipedia.org/wiki/Dog", "https://en.wikipedia.org/wiki/Lion",
+            "https://en.wikipedia.org/wiki/Red_panda", "https://en.wikipedia.org/wiki/Rhinoceros",
             "https://en.wikipedia.org/wiki/Zebra", "https://en.wikipedia.org/wiki/Giant_panda",
             "https://en.wikipedia.org/wiki/Giraffe", "https://en.wikipedia.org/wiki/Elephant",
             "https://en.wikipedia.org/wiki/Rabbit");

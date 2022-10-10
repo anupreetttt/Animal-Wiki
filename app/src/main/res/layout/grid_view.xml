@@ -28,21 +28,46 @@
 <!--        android:scaleType="centerCrop"-->
 <!--        android:text="Tiger"-->
 <!--        android:textSize="20sp" />-->
-
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
         android:id="@+id/imageGView"
-        android:src="@drawable/elephant"/>
-
+        android:layout_width="183dp"
+        android:layout_height="135dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="TODO" />
 
     <TextView
+        android:id="@+id/textGView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textGView"
         android:text="Tiger"
-        android:paddingLeft="50dp"
         android:textSize="20sp"
-        android:layout_marginTop="6dp"/>
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:paddingLeft="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageGView" />
+
+<!--    <ImageView-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:id="@+id/imageGView"-->
+<!--        android:src="@drawable/elephant"/>-->
+
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/textGView"-->
+<!--        android:text="Tiger"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textStyle="bold"-->
+<!--        android:paddingLeft="50dp"-->
+<!--        android:textSize="20sp"-->
+<!--        android:layout_marginTop="6dp"/>-->
 </LinearLayout>
