@@ -42,6 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         listOfUrls = urls;
         viewCheck = checkView;
 
+        // if the layout if gridView, it will fetch the respective files, otherwise it will retrieve list view files and ids
         if (viewCheck == gridLayout) {
             viewOption = R.layout.grid_view;
             imageID = R.id.imageGView;
@@ -78,8 +79,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // populate the item at the input position
-        holder.name.setText(listOfAnimals.get(position));
-        holder.image.setImageResource(imageList.get(position));
+        holder.textView.setText(listOfAnimals.get(position));
+        holder.imageView.setImageResource(imageList.get(position));
 
     }
 
@@ -88,34 +89,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return listOfAnimals.size();
     }
 
-    /*
-        This class creates a wrapper object around a view that contains the layout for
-         an individual item in the list. It also implements the onClickListener so each ViewHolder in the list is clickable.
-        It's onclick method will call the onClick method of the RVClickListener defined in
-        the main activity.
-     */
+        //The layout for each individual item in the list is contained in a view that is created by this class as a wrapper object. Additionally, the onClickListener is implemented, making each ViewHolder in the list clickable.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
 
-        public TextView name;
-        public ImageView image;
-        private RVClickListener listener;
-        private View itemView;
+        public ImageView imageView;
+        public TextView textView;
+        private RVClickListener listener;  // The RVClickListener defined in the main activity's onClick method will be called by this object's onClick function.
+        private View view;
 
-        public ViewHolder(@NonNull View itemView, RVClickListener passedListener) {
+        public ViewHolder(@NonNull View itemView, RVClickListener passListener) {
             super(itemView);
-            name = (TextView) itemView.findViewById(textID);
-            image = (ImageView) itemView.findViewById(imageID);
-            this.itemView = itemView;
+            textView = (TextView) itemView.findViewById(textID);
+            imageView = (ImageView) itemView.findViewById(imageID);
+            this.view = itemView;
             itemView.setOnCreateContextMenuListener(this); //set context menu for each list item (long click)
-            this.listener = passedListener;
+            this.listener = passListener;
+            itemView.setOnClickListener(this);       //set  oncCick listener
 
-            /* don't forget to set the listener defined here to the view (list item) that was
-                passed in to the constructor. */
-            itemView.setOnClickListener(this); //set short click listener
-
-        }
-
-        @Override
+        }@Override
         public void onClick(View v) {
             // getAdapterPosition() returns the position of the current ViewHolder in the adapter.
             listener.onClick(v, getAdapterPosition());
@@ -132,10 +123,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             menu.getItem(0).setOnMenuItemClickListener(viewPhoto);
             menu.getItem(1).setOnMenuItemClickListener(wikipedia);
         }
-
-        /*
-            listener for menu items clicked
-         */
 
         // If user selects the preview photo option from the long click context menu:
         private final MenuItem.OnMenuItemClickListener viewPhoto = new MenuItem.OnMenuItemClickListener(){

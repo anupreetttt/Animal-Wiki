@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private Boolean checkListView = false;
     private Boolean checkView = checkGridView;              //checkView will check if the current view is in the list view or the grid view, its in gridView by default, thats why checkView is set to checkGridView
     RecyclerView recyclerView;
-    private static final String layout = "LAYOUT";
 
     List<String> names = Arrays.asList("Tiger", "Dog", "Lion", "Red Panda", "Rhinoceros", "Zebra", "Panda", "Giraffe", "Elephant", "Rabbit");                  // Passing the name of the names
     List<Integer> animalImg = Arrays.asList(R.drawable.tiger, R.drawable.dog, R.drawable.lion, R.drawable.redpanda, R.drawable.rhino, R.drawable.zebra, R.drawable.panda, R.drawable.giraffe, R.drawable.elephant, R.drawable.rabbit);      // Retrieving images of the animals from the drawable folder
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urls.get(position)));
             startActivity(intent);
         };
-
+        // Passing all the data to the adapter
         MyAdapter adapter = new MyAdapter(animalList, myAnimalImg, urls, checkView, listener);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             default:
-                return false;
+                return checkGridView;
         }
     }
 
